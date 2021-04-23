@@ -14,13 +14,13 @@ import java.util.Map;
  * @version 1.0
  * @date 2021/4/23 11:09
  */
-@FeignClient(value = "beta-service", configuration = FeignConfiguration.class, fallbackFactory = PaymentFeignFallbackFactory.class)
+@FeignClient(value = "beta-service", path = "payment", configuration = FeignConfiguration.class, fallbackFactory = PaymentFeignFallbackFactory.class)
 public interface PaymentFeign {
     
-    @GetMapping("payment/{id}")
+    @GetMapping("{id}")
     Map<String, Object> selectPaymentById(@PathVariable Long id);
     
-    @PostMapping("payment")
+    @PostMapping
     Map<String, Object> insertPayment(@RequestBody Map<String, Object> payment);
     
 }
