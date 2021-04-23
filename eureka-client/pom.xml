@@ -15,6 +15,7 @@
 
     <modules>
         <module>alpha-service</module>
+        <module>beta-service</module>
     </modules>
 
     <dependencies>
