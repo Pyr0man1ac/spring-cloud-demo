@@ -12,6 +12,7 @@
     <artifactId>eureka-client</artifactId>
     <name>eureka-client</name>
     <description>Eureka Client</description>
+    <packaging>pom</packaging>
 
     <modules>
         <module>alpha-service</module>
