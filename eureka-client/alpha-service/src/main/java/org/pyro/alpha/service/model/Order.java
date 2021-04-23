@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.experimental.Tolerate;
 
 import java.math.BigDecimal;
+import java.util.Map;
 
 /**
  * @author ZYC MoronSlayer@outlook.com
@@ -28,6 +29,10 @@ public class Order {
     
     private BigDecimal price;
     
+    private Integer quantity;
+    
     private String description;
+    
+    private Map<String, Object> payment;
     
 }

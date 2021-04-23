@@ -3,10 +3,7 @@ package org.pyro.beta.service.controller;
 import org.pyro.beta.service.model.Payment;
 import org.pyro.beta.service.sevice.PaymentService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @author ZYC MoronSlayer@outlook.com
@@ -23,6 +20,11 @@ public class PaymentController {
     @GetMapping("{paymentId}")
     public Payment selectPaymentById(@PathVariable("paymentId") Long id) {
         return paymentService.selectById(id);
+    }
+    
+    @PostMapping
+    public Payment insertPayment(@RequestBody Payment payment) {
+        return paymentService.insertPayment(payment);
     }
     
 }

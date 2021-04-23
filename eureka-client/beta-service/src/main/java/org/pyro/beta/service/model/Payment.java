@@ -28,6 +28,10 @@ public class Payment {
     
     private BigDecimal price;
     
+    private Integer quantity;
+    
+    private BigDecimal totalPrice;
+    
     private String description;
     
 }
