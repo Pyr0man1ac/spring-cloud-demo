@@ -21,3 +21,39 @@ eureka:
     fetch-registry: true
     service-url:
       defaultZone: http://localhost:8761/eureka
+feign:
+  hystrix:
+    enabled: true
+  okhttp:
+    enabled: true
+hystrix:
+  threadpool:
+    default:
+      # 并发执行的最大线程数，默认10
+      coreSize: 10
+      # BlockingQueue的最大队列数
+      maxQueueSize: 10
+      # 即使maxQueueSize没有达到，达到queueSizeRejectionThreshold该值后，请求也会被拒绝
+      queueSizeRejectionThreshold: 5
+  command:
+    default:
+      # 触发熔断的并发请求数
+      circuitBreaker:
+        # 启用熔断器功能窗口时间内的最小请求数
+        requestVolumeThreshold: 10
+      execution:
+        isolation:
+          strategy: SEMAPHORE
+          thread:
+            # 方式执行的超时时间，默认为1000毫秒，在实际场景中需要根据情况设置
+            timeoutInMilliseconds: 5000
+          semaphore:
+            maxConcurrentRequests: 1000
+ribbon:
+  ConnectTimeout: 1000
+  ReadTimeout: 3000
+  # 同一台实例的最大自动重试次数，默认为0，不包括首次
+  MaxAutoRetries: 0
+  # 要重试的下一个实例的最大数量，默认为1，不包括第一次被调用的实例
+  MaxAutoRetriesNextServer: 0
+  OkToRetryOnAllOperations: false
