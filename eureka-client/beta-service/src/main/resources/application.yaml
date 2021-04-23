@@ -8,6 +8,9 @@ management:
     web:
       exposure:
         include: health, info, beans, mappings, env
+  endpoint:
+    health:
+      show-details: always
 eureka:
   instance:
     prefer-ip-address: true
