@@ -29,11 +29,12 @@ public class OrderService {
         order.setId(id);
         order.setPrice(BigDecimal.TEN);
         order.setDescription("That's an order!");
-        log.info("Return {}", order);
     
         Map<String, Object> payment = paymentFeign.selectPaymentById(12321L);
         log.info("Payment Feign Return {}", payment);
         
+        order.setPayment(payment);
+        log.info("Return {}", order);
         return order;
     }
     
