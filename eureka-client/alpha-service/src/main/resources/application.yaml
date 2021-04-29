@@ -3,11 +3,90 @@ server:
 spring:
   application:
     name: alpha-service
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: admin
+    password: 123456
+    virtual-host: /
+  cloud:
+    # spring cloud stream 属性
+    stream:
+      # 设置全局binder
+      default-binder: rabbit
+      # 所有绑定Channel的公用配置 （一旦设置了spring.cloud.stream.bindings.<channelName>中任何一个属性 则default失效）
+      # default:
+        # binder: rabbit
+        # destination: order.topic
+        # group: ${spring.application.name} # 只为consumer生效
+        # content-type: application/json
+        # consumer:
+          # concurrency: 5
+          # max-attempts: 7
+          # back-off-initial-interval: 1000
+          # back-off-max-interval: 3000
+          # back-off-multiplier: 2.0
+        # producer:
+           # partitionCount:
+      # 绑定
+      bindings:
+        # 自定义Channel
+        orderInput:
+          # 每个Channel可单独设置Binder
+          binder: rabbit
+          # Channel的目标 也就是主题 缺省值为<channelName>
+          destination: order.topic
+          # 消费者组
+          group: ${spring.application.name}
+          # 消费者属性
+          consumer:
+            # 并发数量 缺省值1
+            concurrency: 5
+            # 最大处理次数(包含第一次的次数与重试次数 也就是最大处理次数=1+重试次数 所以为1时不会重试) 缺省值3 关闭1
+            max-attempts: 1
+            # 初次重试间隔（ms）缺省值1000
+            back-off-initial-interval: 1000
+            # 最大重试间隔（ms）缺省值10000
+            back-off-max-interval: 3000
+            # 重试乘数 缺省值2.0
+            back-off-multiplier: 2.0
+        # 自定义Channel
+        orderOutput:
+          # 每个Channel可单独设置Binder
+          binder: rabbit
+          # Channel的目标 也就是主题 缺省值为<channelName>
+          destination: order.topic
+        # 自定义Channel
+        paymentOutput:
+          # 每个Channel可单独设置Binder
+          binder: rabbit
+          # Channel的目标 也就是主题 缺省值为<channelName>
+          destination: payment.topic
+      # rabbit binder implementation 属性
+      rabbit:
+        # 绑定
+        bindings:
+          # 自定义Channel
+          orderInput:
+            # 消费者属性
+            consumer:
+              # 自动绑定死信队列 缺省值<destination>.<group>.dlq
+              auto-bind-dlq: true
+              # 消息带有stack trace (副作用: auto-bind-dlq与requeue-rejected同时存在时 false时重回队头 true时进入死信队列)
+              republish-to-dlq: true
+              # 重新排队被拒绝的消息 (失败消息重回队头)
+              requeue-rejected: false
+              # 死信交换机名称
+              # dead-letter-exchange: order.topic.dlx
+              # dlq time to live
+              # dlq-ttl: 5000
+              # dlq的消息如果成为私信 他的死信交换机... (只有Key没有Value 会设置为发送到此dlq之前的那个原始交换机 也就是有发回去了...)
+              # dlq-dead-letter-exchange:
 management:
   endpoints:
     web:
       exposure:
-        include: health, info, beans, mappings, env
+        include: health, info, beans, mappings, env, bindings
   endpoint:
     health:
       show-details: always

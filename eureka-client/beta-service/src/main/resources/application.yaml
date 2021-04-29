@@ -3,11 +3,38 @@ server:
 spring:
   application:
     name: beta-service
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: admin
+    password: 123456
+    virtual-host: /
+  cloud:
+    stream:
+      bindings:
+        paymentInput:
+          destination: payment.topic
+          group: ${spring.application.name}
+        orderInput:
+          destination: order.topic
+          group: ${spring.application.name}
+      rabbit:
+        bindings:
+          paymentInput:
+            consumer:
+              auto-bind-dlq: true
+              republish-to-dlq: true
+              requeue-rejected: false
+          orderInput:
+            consumer:
+              auto-bind-dlq: true
+              republish-to-dlq: true
+              requeue-rejected: false
 management:
   endpoints:
     web:
       exposure:
-        include: health, info, beans, mappings, env
+        include: health, info, beans, mappings, env, bindings
   endpoint:
     health:
       show-details: always

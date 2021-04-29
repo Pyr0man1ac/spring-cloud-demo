@@ -5,6 +5,8 @@ import org.pyro.alpha.service.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 /**
  * @author ZYC MoronSlayer@outlook.com
  * @version 1.0
@@ -25,6 +27,12 @@ public class OrderController {
     @PostMapping
     public Order insertOrder(@RequestBody Order order) {
         return orderService.insertOrder(order);
+    }
+
+    @PostMapping("async")
+    public String async(@RequestBody Map<String, Object> params) {
+        orderService.async(params);
+        return "PUBLISH SUCCESS";
     }
     
 }
