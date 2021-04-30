@@ -1,0 +1,66 @@
+server:
+  port: 9500
+spring:
+  application:
+    name: gateway
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, info, beans, mappings, env, routes
+  endpoint:
+    health:
+      show-details: always
+eureka:
+  instance:
+    prefer-ip-address: true
+    ip-address: ${spring.cloud.client.ip-address}
+    instance-id: ${eureka.instance.ip-address}:${spring.application.name}:${server.port}
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+# 服务网关
+zuul:
+  # API路由前缀 介以上下文（context）路由与API路由之间 用以区分上下文（context）路由与API路由
+  prefix: /api
+  # 自定义映射路由
+  # routes:
+    # alpha-service: /alpha/**
+    # beta-service: /beta/**
+  # 忽略Eureka根据服务ID自动映射路由 多个值用逗号分隔 *代表全部忽略 (值为服务ID时可以不加引号 如果加引号 逗号必须在引号内 *必须加引号)
+  # ignored-services: '*'
+# 熔断器
+hystrix:
+  threadpool:
+    default:
+      # 并发执行的最大线程数，默认10
+      coreSize: 10
+      # BlockingQueue的最大队列数
+      maxQueueSize: 10
+      # 即使maxQueueSize没有达到，达到queueSizeRejectionThreshold该值后，请求也会被拒绝
+      queueSizeRejectionThreshold: 5
+  command:
+    default:
+      # 触发熔断的并发请求数
+      circuitBreaker:
+        # 启用熔断器功能窗口时间内的最小请求数
+        requestVolumeThreshold: 10
+      execution:
+        isolation:
+          strategy: SEMAPHORE
+          thread:
+            # 方式执行的超时时间，默认为1000毫秒，在实际场景中需要根据情况设置
+            timeoutInMilliseconds: 5000
+          semaphore:
+            maxConcurrentRequests: 1000
+# 客户端负载均衡
+ribbon:
+  ConnectTimeout: 1000
+  ReadTimeout: 3000
+  # 同一台实例的最大自动重试次数，默认为0，不包括首次
+  MaxAutoRetries: 0
+  # 要重试的下一个实例的最大数量，默认为1，不包括第一次被调用的实例
+  MaxAutoRetriesNextServer: 0
+  OkToRetryOnAllOperations: false
