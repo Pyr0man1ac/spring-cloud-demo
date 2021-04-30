@@ -6,6 +6,7 @@ import com.netflix.zuul.exception.ZuulException;
 import lombok.extern.slf4j.Slf4j;
 import org.pyro.gateway.constant.FilterType;
 import org.pyro.gateway.constant.HeaderConstant;
+import org.pyro.gateway.util.RequestHeaderUtil;
 import org.springframework.stereotype.Component;
 
 import java.util.Objects;
@@ -49,12 +50,7 @@ public class ResponseFilter extends ZuulFilter {
     }
     
     private String getAccessHeader() {
-        RequestContext requestContext = RequestContext.getCurrentContext();
-        String valueInOriginalHeader = requestContext.getRequest().getHeader(HeaderConstant.ACCESS);
-        if (Objects.nonNull(valueInOriginalHeader)) {
-            return valueInOriginalHeader;
-        }
-        return requestContext.getZuulRequestHeaders().get(HeaderConstant.ACCESS);
+        return RequestHeaderUtil.getRequestHeader(HeaderConstant.ACCESS);
     }
     
 }
