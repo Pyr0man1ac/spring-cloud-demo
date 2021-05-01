@@ -11,7 +11,7 @@
 
     <artifactId>core</artifactId>
     <name>core</name>
-    <description>Core</description>
+    <description>Common Util And Configuration</description>
 
     <dependencies>
         <dependency>
