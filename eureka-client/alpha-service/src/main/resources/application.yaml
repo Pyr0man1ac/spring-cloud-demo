@@ -80,7 +80,7 @@ spring:
               # dead-letter-exchange: order.topic.dlx
               # dlq time to live
               # dlq-ttl: 5000
-              # dlq的消息如果成为私信 他的死信交换机... (只有Key没有Value 会设置为发送到此dlq之前的那个原始交换机 也就是有发回去了...)
+              # dlq的消息如果成为死信 它的死信交换机... (只有Key没有Value 会设置为发送到此dlq之前的那个原始交换机 也就是又发回去了...)
               # dlq-dead-letter-exchange:
 management:
   endpoints:
