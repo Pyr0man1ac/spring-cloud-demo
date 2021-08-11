@@ -78,7 +78,9 @@ public class Consumer {
      * 注意
      * 如果 消息发布者的数据结构 与 消息订阅者的数据结构 不一致
      * 如 用String发布 用Map<String, Object>订阅
-     * 会导致消息被“消费” 从队列中删除 但实际并没有进入订阅方法执行相关逻辑
+     * 会导致 消息Convert异常 实际并没有进入订阅方法执行相关逻辑
+     * 如果 没有配置死信队列 && 没有配置重回队列
+     * 会导致 超出重试次数后被视为消费成功 从队列中删除
      * 也就是说 会导致消息丢失
      */
     @StreamListener(CustomizeBinding.ORDER_INPUT)
