@@ -74,6 +74,13 @@ public class Consumer {
 ////        throw new RuntimeException("THE EXCEPTION MESSAGE");
 //    }
     
+    /**
+     * 注意
+     * 如果 消息发布者的数据结构 与 消息订阅者的数据结构 不一致
+     * 如 用String发布 用Map<String, Object>订阅
+     * 会导致消息被“消费” 从队列中删除 但实际并没有进入订阅方法执行相关逻辑
+     * 也就是说 会导致消息丢失
+     */
     @StreamListener(CustomizeBinding.ORDER_INPUT)
     @SendTo(CustomizeBinding.PAYMENT_OUTPUT)
     public Map<String, Object> handleOrderInput(@Payload Map<String, Object> payload) {
